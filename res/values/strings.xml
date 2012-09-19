@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Sample_5_7!</string>
+    <string name="app_name">IHealth</string>
+    <string name="andy">Android的創造者: Andy Rubin</string>
+    <string name="bill">Java創造者之一: Bill Joy</string>
+    <string name="linux">Linux之父: Linus Torvalds</string>    
+    
+
+
+    <string name="SBP">SBP (mmHg)</string>
+    <string name="DBP">DBP (mmHg)</string>
+    <string name="Heartrate">HR (bpm)</string>
+    <string name="PTT">PTT</string>
+    <string name="SBPV">--</string>
+    <string name="DBPV">--</string>
+    <string name="HeartrateV">--</string>
+    <string name="PTTV">--ms</string>
+    <string name="Username">Username: RINSON</string>
+    
+    
+    <string name="Sex">Sex</string>
+    <string name="Age">Age</string>
+    <string name="Weight">Weight</string>
+    <string name="Height">Height</string>
+    <string name="Arm">Arm</string>
+    <string name="Sexhint">M/F</string>
+    <string name="agehint">1-100</string>
+    <string name="Heighthint">cm</string>
+    <string name="weighthint">kg</string>
+    <string name="Armhint">cm</string>
+        <string name="Cusername">Name</string>
+    <string name="Namehint">Rinson</string>
+        <string name="ok">ok</string>
+</resources>

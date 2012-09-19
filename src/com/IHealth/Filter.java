@@ -1,0 +1,13 @@
+package com.IHealth;
+
+public class Filter {
+	
+	DataQueue filter = new DataQueue(10);
+	
+	public int Filt(int n)
+	{
+		filter.push(n);
+		return filter.IsFull()? filter.GetMean():n;
+	} 
+
+}

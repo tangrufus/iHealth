@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<AbsoluteLayout android:id="@+id/linearLayout01"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+
+		<ImageView android:id="@+id/imageView1"
+			android:layout_width="116dp" android:layout_height="116dp"
+			android:layout_x="9dp" android:layout_y="14dp" android:src="@drawable/user" />
+
+
+		<TextView android:id="@+id/MTextView1" android:layout_width="wrap_content"
+			android:layout_height="32dp" android:layout_x="9dp" android:layout_y="255dp"
+			android:text="@string/SBP" android:textColor="@color/Red"
+			android:textSize="18dp" />
+
+		<TextView android:id="@+id/DBPV" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="8dp"
+			android:layout_y="348dp" android:text="@string/DBPV"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/Chartreuse " android:textSize="50dp" />
+
+		<TextView android:id="@+id/SBPV" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="9dp"
+			android:layout_y="279dp" android:text="@string/SBPV"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="@color/Red" android:textSize="50dp" />
+
+		<TextView android:id="@+id/MTextView3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="6dp"
+			android:layout_y="330dp" android:text="@string/DBP"
+			android:textColor="@color/Chartreuse " android:textSize="18dp" />
+
+		<TextView android:id="@+id/HRV" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="8dp"
+			android:layout_y="188dp" android:text="@string/HeartrateV"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/Yellow" android:textSize="50dp" />
+
+		<TextView android:id="@+id/MTextView4" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="6dp"
+			android:layout_y="155dp" android:text="@string/Heartrate"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/Yellow" android:textSize="18dp" />
+
+		<TextView android:id="@+id/MTextView2" android:layout_width="wrap_content"
+			android:layout_height="36dp" android:layout_x="7dp" android:layout_y="325dp"
+			android:text="" android:textColor="@color/Blue"
+			android:textSize="15dp" />
+
+
+		<TextView android:id="@+id/PTTV" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="10dp"
+			android:layout_y="358dp" android:text=""
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/Blue" android:textSize="25dp" />
+
+		<TextView android:text="HR:" android:id="@+id/textView3"
+			android:layout_width="wrap_content" android:layout_weight="1"
+			android:layout_height="0dp"></TextView>
+		
+		<com.androidplot.xy.XYPlot android:layout_x="100dip"
+			android:layout_y="130dip" android:layout_marginLeft="0px"
+			android:layout_height="360px" android:layout_width="310px"
+			android:layout_marginRight="0px" android:id="@+id/dynamicPlot"
+			android:layout_marginTop="0px" title="ECG" android:layout_weight="1"></com.androidplot.xy.XYPlot>
+		
+		<Button android:text="-" android:id="@+id/zoom_in"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="100dp"
+		android:layout_y="360dp"
+		 ></Button>
+		  
+		 <TextView  android:id="@+id/sampsize" 
+		 android:text="Sampling size = 8" 
+		 android:layout_width="fill_parent" 
+		 android:layout_height="wrap_content" 
+		 android:layout_x="150dp"
+		  android:layout_y="360dp"/>
+		
+		<Button android:text="+" android:id="@+id/zoom_out"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="280dp"
+		 android:layout_y="360dp" ></Button>
+
+		<TextView android:id="@+id/MTextView9" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="176dp"
+			android:layout_y="59dp" android:text="@string/Username"
+			android:textAppearance="?android:attr/textAppearanceMedium" />
+	</AbsoluteLayout>
+
+
+	<AbsoluteLayout android:id="@+id/linearLayout02"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+		<DatePicker android:id="@+id/datePicker1"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_x="26dp" android:layout_y="266dp" />
+
+		<TextView android:id="@+id/CTextView04" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="172dp"
+			android:layout_y="112dp" android:text="@string/Weight"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+		<TextView android:id="@+id/CTextView05" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="176dp"
+			android:layout_y="174dp" android:text="@string/Arm"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+		<EditText android:id="@+id/CEditText05" android:layout_width="64dp"
+			android:layout_height="29dp" android:layout_x="242dp"
+			android:layout_y="118dp" android:hint="@string/weighthint"
+			android:inputType="number" android:textSize="10dp" />
+
+		<EditText android:id="@+id/CEditText04" android:layout_width="64dp"
+			android:layout_height="29dp" android:layout_x="240dp"
+			android:layout_y="169dp" android:hint="@string/Armhint"
+			android:inputType="number" android:textSize="10dp" />
+
+		<TextView android:id="@+id/CTextView03" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="169dp"
+			android:layout_y="67dp" android:text="@string/Height"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+		<EditText android:id="@+id/CEditText03" android:layout_width="64dp"
+			android:layout_height="29dp" android:layout_x="249dp"
+			android:layout_y="65dp" android:hint="@string/Heighthint"
+			android:inputType="number" android:textSize="10dp">
+
+			<requestFocus />
+		</EditText>
+
+		<TextView android:id="@+id/CTextView01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="10dp"
+			android:layout_y="112dp" android:text="@string/Sex"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+		<TextView android:id="@+id/CTextView02" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="14dp"
+			android:layout_y="168dp" android:text="@string/Age"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+		<EditText android:id="@+id/CEditText02" android:layout_width="64dp"
+			android:layout_height="29dp" android:layout_x="90dp"
+			android:layout_y="174dp" android:hint="@string/agehint"
+			android:inputType="number" android:textSize="10dp" />
+
+		<EditText android:id="@+id/CEditText01" android:layout_width="67dp"
+			android:layout_height="32dp" android:layout_x="88dp"
+			android:layout_y="114dp" android:hint="@string/Sexhint"
+			android:textSize="10dp" />
+
+
+		<TextView android:id="@+id/CTextView06" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="11dp"
+			android:layout_y="64dp" android:text="@string/Cusername"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textSize="20dp" />
+
+
+		<EditText android:id="@+id/CEditText06" android:layout_width="67dp"
+			android:layout_height="32dp" android:layout_x="87dp"
+			android:layout_y="62dp" android:hint="@string/Namehint"
+			android:selectAllOnFocus="true" android:textSize="10dp" />
+
+
+
+		<Button android:layout_height="wrap_content" android:id="@+id/Button01"
+			android:layout_width="wrap_content" android:text="@string/ok"
+			android:layout_x="240dp" android:layout_y="199dp">
+		</Button>
+
+	</AbsoluteLayout>
+
+
+
+
+
+
+	<AbsoluteLayout android:id="@+id/linearLayout03"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:gravity="center_horizontal" android:orientation="vertical">
+
+		<WebView android:id="@+id/wv" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" />
+
+	</AbsoluteLayout>
+	
+<ScrollView 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	<LinearLayout 
+	android:id="@+id/linearLayout05"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+
+
+		<ListView android:layout_height="wrap_content" android:id="@+id/listView1"
+			android:layout_width="fill_parent"></ListView>
+
+		<TextView android:id="@+id/dataview" android:orientation="vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:text="~"></TextView>
+			
+		<Button android:id="@+id/Record" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Record Data"></Button>
+		<Button android:id="@+id/Email" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Email"></Button>
+		<Button android:id="@+id/Dial" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Emergency Call"></Button>
+			
+	</LinearLayout></ScrollView>
+</FrameLayout>
