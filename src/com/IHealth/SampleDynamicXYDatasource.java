@@ -1,6 +1,7 @@
-package com.IHealth;
+package com.iHealth;
 
 
+import com.iHealth.R;
 import java.util.Observable;
 import java.util.Observer;
 import java.io.*;

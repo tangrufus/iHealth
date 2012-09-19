@@ -1,4 +1,4 @@
-package com.IHealth;
+package com.iHealth;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,8 +49,9 @@ import com.androidplot.Plot;
 import com.androidplot.Plot.BorderStyle;
 import com.androidplot.ui.SizeLayoutType;
 import com.androidplot.xy.*;
-import com.IHealth.SampleDynamicSeries;
-import com.IHealth.SampleDynamicXYDatasource;
+import com.iHealth.R;
+import com.iHealth.SampleDynamicSeries;
+import com.iHealth.SampleDynamicXYDatasource;
 
 
 public class IHealthActivity extends  TabActivity {

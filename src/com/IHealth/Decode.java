@@ -1,8 +1,9 @@
-package com.IHealth;
+package com.iHealth;
 
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import com.iHealth.R;
 
 import java.io.*;
 public class Decode implements  Runnable {

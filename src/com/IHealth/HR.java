@@ -1,4 +1,6 @@
-package com.IHealth;
+package com.iHealth;
+
+import com.iHealth.R;
 
 class HR {
     Boolean ECGOK = false, PPGOK=false;

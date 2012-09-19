@@ -1,4 +1,6 @@
-package com.IHealth;
+package com.iHealth;
+
+import com.iHealth.R;
 
 public class MathTools {
 	double k,  b;

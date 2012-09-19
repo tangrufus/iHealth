@@ -1,4 +1,4 @@
-package com.IHealth;
+package com.iHealth;
 import java.io.*;
 
 import android.app.Activity;
@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.iHealth.R;
 public class SvaeData {
 	File myFile;
 	FileOutputStream fOut;

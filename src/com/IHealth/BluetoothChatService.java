@@ -1,4 +1,4 @@
-package com.IHealth;
+package com.iHealth;
 
 import java.io.*;
 import java.sql.Date;
@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import com.iHealth.R;
 
 /**
  * This class does all the work for setting up and managing Bluetooth

@@ -1,5 +1,6 @@
-package com.IHealth;
+package com.iHealth;
 
+import com.iHealth.R;
 import java.io.*;
 
 

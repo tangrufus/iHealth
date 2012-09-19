@@ -1,6 +1,7 @@
-package com.IHealth;
+package com.iHealth;
 
 import com.androidplot.series.XYSeries;
+import com.iHealth.R;
 
 public class SampleDynamicSeries implements XYSeries {
     private SampleDynamicXYDatasource datasource;
