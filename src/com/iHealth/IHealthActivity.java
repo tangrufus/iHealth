@@ -30,7 +30,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Color;
-import android.app.Activity;	//¤Þ¥Î¬ÛÃöÃþ§O
+import android.app.Activity;
 import android.view.View;
 
 import android.app.AlertDialog;
@@ -77,7 +77,6 @@ public class IHealthActivity extends  TabActivity {
 	ListView list = null;
 	TextView tv = null;
 	@SuppressWarnings("unused")
-	//	private Handler handler = new Handler();
 	InputStream is;
 	byte buffer[] = new byte[1024];
 	int bytes;
@@ -129,13 +128,11 @@ public class IHealthActivity extends  TabActivity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//		Decode dec = new Decode(pinDecode,poutDecodeECG,poutDecodePPG, poutCECG,poutCPPG);
-		//		new Thread(dec).start();
 
 		//		  ===================================================================================================
 		bltservice = new BluetoothChatService(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
 
-		//		bltservice = new BluetoothChatService(this, mHandler,null, null,poutBLT);
+
 		CalHRBP = new Calculation(this, calHandler, 125, 75, 4000, pinCalECG, pinCalPPG);
 		new Thread(CalHRBP).start();
 		//		
@@ -195,11 +192,7 @@ public class IHealthActivity extends  TabActivity {
 		data = new SampleDynamicXYDatasource(pinPlotECG, pinPlotPPG);
 		final SampleDynamicSeries sine1Series = new SampleDynamicSeries(data, 0, "Sine 1");
 
-		//		SampleDynamicSeries sine2Series = new SampleDynamicSeries(data, 1, "Sine 2");
 		dynamicPlot.addSeries(sine1Series, new LineAndPointFormatter(Color.BLUE, null, Color.TRANSPARENT));
-		//		dynamicPlot.addSeries(sine2Series, new LineAndPointFormatter(Color.rgb(0, 20, 0), null, Color.TRANSPARENT));
-
-
 		dynamicPlot.setGridPadding(0, 0, 0, 0);
 		data.addObserver(plotUpdater);
 
@@ -233,18 +226,8 @@ public class IHealthActivity extends  TabActivity {
 		dynamicPlot.getBorderPaint().setAlpha(0);
 		dynamicPlot.getLegendWidget().setVisible(false);
 		dynamicPlot.getGraphWidget().setGridBackgroundPaint(null);
-		//		dynamicPlot.getLayoutManager().remove(dynamicPlot.getLegendWidget());
-		////		dynamicPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.BLACK);
 		dynamicPlot.setBorderStyle(BorderStyle.NONE, null, null);
 		dynamicPlot.getBorderPaint().setColor(Color.WHITE);
-		//		dynamicPlot.setBorderStyle(null, null, null);
-		//		dynamicPlot.setPlotMarginBottom(0);
-		//		dynamicPlot.setPlotMarginLeft(0);
-		//		dynamicPlot.setPlotMarginRight(0);
-		//		dynamicPlot.setPlotMarginTop(0);
-		//		dynamicPlot.getGraphWidget().setWidth(1f, SizeLayoutType.FILL);
-
-
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		zoom_in = (Button) findViewById(R.id.zoom_in);
@@ -297,7 +280,6 @@ public class IHealthActivity extends  TabActivity {
 
 		//		  ===================================================================================================
 
-		//		final Thread a = new Thread(data);
 		new Thread(data).start();
 
 
@@ -307,7 +289,6 @@ public class IHealthActivity extends  TabActivity {
 				{ 
 					public void onClick(View v){ 					
 						String CEditText06str=CEditText06.getText().toString();		
-						//String pwdStr=pwd.getText().toString();		
 						MTextView9.setText(CEditText06str);
 					} 
 				}); 
@@ -379,7 +360,6 @@ public class IHealthActivity extends  TabActivity {
 
 					try {
 						bltservice.saveData.CreatFile(filename);
-						//					bltservice.saveData.WriteTxt(getTime("Start Time: yyyy/MM/dd hh:mm:ss"));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -388,7 +368,6 @@ public class IHealthActivity extends  TabActivity {
 				else 
 				{
 					rec.setText("Record");
-					//					bltservice.saveData.WriteTxt(getTime("End Time: yyyy/MM/dd hh:mm:ss"));
 					bltservice.saveData.EndSave();
 					bltservice.Records = false;
 				}	
@@ -418,15 +397,7 @@ public class IHealthActivity extends  TabActivity {
 				i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"waadiox@gmail.com"});
 				i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
 				i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-				//				File root = Environment.getExternalStorageDirectory();
-				//				File file = new File(root, "/IHealthRecord/"+getTime("yyyyMMdd")+".txt");
-				//				if (!file.exists() || !file.canRead()) {
-				//				    Toast.makeText(IHealthActivity.this, "Attachment Error", Toast.LENGTH_SHORT).show();
-				//				    finish();
-				//				    return;
-				//				}
-				//				Uri uri = Uri.fromFile(file);
-				//				i.putExtra(Intent.EXTRA_STREAM, uri);
+			
 				try {
 					startActivity(Intent.createChooser(i, "Send mail..."));
 				} catch (android.content.ActivityNotFoundException ex) {
@@ -446,29 +417,29 @@ public class IHealthActivity extends  TabActivity {
 		return dateNow;
 	}
 	private AlertDialog getAlertDialog(String title,String message){
-		//²£¥Í¤@­ÓBuilderª«¥ó
+		//ï¿½ï¿½ï¿½Í¤@ï¿½ï¿½Builderï¿½ï¿½ï¿½ï¿½
 		Builder builder = new AlertDialog.Builder(IHealthActivity.this);
-		//³]©wDialogªº¼ÐÃD
+		//ï¿½]ï¿½wDialogï¿½ï¿½ï¿½ï¿½ï¿½D
 		builder.setTitle(title);
-		//³]©wDialogªº¤º®e
+		//ï¿½]ï¿½wDialogï¿½ï¿½ï¿½ï¿½ï¿½e
 		builder.setMessage(message);
-		//³]©wPositive«ö¶s¸ê®Æ
+		//ï¿½]ï¿½wPositiveï¿½ï¿½ï¿½sï¿½ï¿½ï¿½
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//«ö¤U«ö¶s®ÉÅã¥Ü§ÖÅã
-				//				Toast.makeText(IHealthActivity.this, "±z«ö¤UOK«ö¶s", Toast.LENGTH_SHORT).show();
+				//ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½Ü§ï¿½ï¿½ï¿½
+				//				Toast.makeText(IHealthActivity.this, "ï¿½zï¿½ï¿½ï¿½UOKï¿½ï¿½ï¿½s", Toast.LENGTH_SHORT).show();
 			}
 		});
-		//³]©wNegative«ö¶s¸ê®Æ
+		//ï¿½]ï¿½wNegativeï¿½ï¿½ï¿½sï¿½ï¿½ï¿½
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//«ö¤U«ö¶s®ÉÅã¥Ü§ÖÅã
-				//				Toast.makeText(IHealthActivity.this, "±z«ö¤UCancel«ö¶s", Toast.LENGTH_SHORT).show();
+				//ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½Ü§ï¿½ï¿½ï¿½
+				//				Toast.makeText(IHealthActivity.this, "ï¿½zï¿½ï¿½ï¿½UCancelï¿½ï¿½ï¿½s", Toast.LENGTH_SHORT).show();
 			}
 		});
-		//§Q¥ÎBuilderª«¥ó«Ø¥ßAlertDialog
+		//ï¿½Qï¿½ï¿½Builderï¿½ï¿½ï¿½ï¿½Ø¥ï¿½AlertDialog
 		builder.show();
 		return builder.create();
 	}
@@ -484,11 +455,8 @@ public class IHealthActivity extends  TabActivity {
 				//                if(D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
 				switch (msg.arg1) {
 				case BluetoothChatService.STATE_CONNECTED:
-					//                    setStatus(getSt-ring(R.string.title_connected_to, mConnectedDeviceName));
-					//                    mConversationArrayAdapter.clear();
 					break;
 				case BluetoothChatService.STATE_CONNECTING:
-					//                    setStatus(R.string.title_connecting);
 					break;
 				case BluetoothChatService.STATE_LISTEN:
 				case BluetoothChatService.STATE_NONE:
@@ -498,7 +466,6 @@ public class IHealthActivity extends  TabActivity {
 					SBPV.setText("--");
 					DBPV.setText("--");
 					HRV.setText("--");
-					//                    setStatus(R.string.title_not_connected);
 					break;
 				}
 				break;
@@ -506,43 +473,15 @@ public class IHealthActivity extends  TabActivity {
 				byte[] writeBuf = (byte[]) msg.obj;
 				// construct a string from the buffer
 				String writeMessage = new String(writeBuf);
-				//                mConversationArrayAdapter.add("Me:  " + writeMessage);
-
 				break;
 			case MESSAGE_READ:
-				//				int[] decodedData = (int[]) msg.obj;
+
 				// construct a string from the valid bytes in the buffer
 				int[] buff = (int[]) msg.obj;
-				//				String readMessage = new String(readBuf, 0, msg.arg1);
-				//				CheckPackage(buff);
-				//				System.arraycopy(ECG, 0, ECG, ECG.length-1, 1);
-				//				System.arraycopy(PPG, 0, PPG, PPG.length-1, 1);
-				//				ECG[ECG.length-1] = ecg;//decodedData[0];
-				//				PPG[PPG.length-1] = ppg;//decodedData[1];
-				//				count++; 
-
-				//				if(count %size==0)
-				//				{
-				//					data.update(decodedData[0],decodedData[1]);
-				//				}
-				//tmp = 
-				//				textdata = (TextView) findViewById(R.id.dataview);
-				//				tmp = (String) textdata.getText();
-				//				if(tmp.length()>600)
-				//					textdata.setText("");
-				//				textdata.setText( textdata.getText()+getHex(buff));
-				//				textdata.setText(ecg+" "+ppg);//(decodedData[0] + " " + decodedData[1]);
-				//                mConversationArrayAdapter.add(mConnectedDeviceName+":  " + readMessage);
 				break;
 			case MESSAGE_DEVICE_NAME:
-				// save the connected device's name
-				//                mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-				//                Toast.makeText(getApplicationContext(), "Connected to "
-				//                               + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
 				break;
 			case MESSAGE_TOAST:
-				//                Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-				//                               Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}
@@ -593,17 +532,11 @@ public class IHealthActivity extends  TabActivity {
 	{
 
 		int header;
-		//		th = (byte) 0x7F;
-
+		
 		for(int i = 0;i<=buffer.length-1;i++)
 		{
 			DQ.push(buffer[i]);
 			header = DQ.getHead();
-			//			byte b = (byte) (header & 0x7F);
-			//			byte c = (byte) (header & 0x80);
-			//			byte d = (byte) 0x80;
-			//			Boolean boo = ((header & 0x80) == 0x80);
-			//			Boolean bo = ((byte)(header & 0x80) == 0x80);
 			if( (header & 0x80) == 0x80)
 			{
 				decode();
@@ -631,13 +564,7 @@ public class IHealthActivity extends  TabActivity {
 
 			ecg = ((DQ.queue[1] & 0x7F) << 3) +((DQ.queue[2] & 0x70) >> 4);
 			ppg = ((DQ.queue[2] & 0x07) << 7) + (DQ.queue[3] & 0x7F);
-			//		ecg = ((DQ.queue[1] & 0x7F) << 3) +((d[2] & 0x70) >> 4);
-			//		ppg = ((d[2] & 0x07) << 7) + (d[3] & 0x7F);
-			//		}
-			//		else
-			//		{
-			//			ecg =-400;
-			//			ppg=-800;
+			
 		}
 		count++;
 		if (count%size==0);
@@ -655,13 +582,13 @@ public class IHealthActivity extends  TabActivity {
 			final TextView SBPV = (TextView)findViewById(R.id.SBPV);
 			final TextView DBPV = (TextView)findViewById(R.id.DBPV);
 			final TextView HRV = (TextView)findViewById(R.id.HRV);
-			//			final TextView PTTV = (TextView)findViewById(R.id.PTTV);
+			
 			switch(msg.what)
 			{case resultHR:				
 				if(results[0]!=-1 && results[0]>=40){
 					HRV.setText(results[0]+"");}
 				else{HRV.setText("--");}
-				//				PTTV.setText(results[1]+"ms");
+
 				if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50){
 					SBPV.setText(results[2]+"");DBPV.setText(results[3]+"");}
 				else{
