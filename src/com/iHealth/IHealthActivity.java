@@ -576,7 +576,7 @@ public class IHealthActivity extends  TabActivity {
 		@Override
 		public void handleMessage(Message msg)
 		{
-			int[]	results =(int[]) msg.obj;
+			int[] results = (int[]) msg.obj;
 			final TextView SBPV = (TextView)findViewById(R.id.SBPV);
 			final TextView DBPV = (TextView)findViewById(R.id.DBPV);
 			final TextView HRV = (TextView)findViewById(R.id.HRV);
