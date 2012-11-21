@@ -57,7 +57,6 @@ public class Calculation implements Runnable{
 			ppg.pushbulk(ppgbuffer.queue);
 			ecg.DetectPeak();
 			ppg.DetectDPeaks();
-			//                ppg.DetectPeakFromRaw();
 			ecgbuffer.Clear();
 			ppgbuffer.Clear();
 
@@ -125,6 +124,6 @@ public class Calculation implements Runnable{
 			}
 
 
-		}
+		}//end of while
 	}
 }
