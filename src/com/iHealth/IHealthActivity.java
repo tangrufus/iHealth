@@ -67,8 +67,6 @@ public class IHealthActivity extends  TabActivity {
 	//	===================================================================================
 	private static final int REQUEST_ENABLE_BT = 3;
 	private String mac = "";
-	//private BluetoothSocket clientSocket;
-	// private ArrayAdapter<String> mArrayAdapter;
 	private Vector<String> deviceMacs = new Vector<String>();
 	private Vector<String> deviceNames = new Vector<String>();
 	private BluetoothAdapter mAdaptor = null;
