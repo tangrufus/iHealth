@@ -88,7 +88,10 @@ public class IHealthActivity extends  TabActivity {
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_TOAST = 5;
 	public static TextView textdata = null;// 
-	private BluetoothChatService bltservice = null;
+	// private BluetoothChatService bltservice = null;
+	// use bluetooth simulator
+	private BluetoothSimulator bltservice = null;
+	
 	SampleDynamicXYDatasource data = null;
 	public static final int resultHR = 0;
 	public static final int resultBP = 1;
@@ -128,8 +131,10 @@ public class IHealthActivity extends  TabActivity {
 		}
 
 		//		  ===================================================================================================
-		bltservice = new BluetoothChatService(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
-
+		
+		//bltservice = new BluetoothChatService(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
+		// use bluetooth simulator
+		bltservice = new BluetoothSimulator(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
 
 		CalHRBP = new Calculation(this, calHandler, 125, 75, 4000, pinCalECG, pinCalPPG);
 		new Thread(CalHRBP).start();
@@ -293,6 +298,11 @@ public class IHealthActivity extends  TabActivity {
 		//		====================================================================================================
 
 		/* Bluetooth connection */
+		// use bluetooth simulator
+		
+		new Thread(bltservice).start();
+		
+		/*
 		mAdaptor = BluetoothAdapter.getDefaultAdapter();
 		if(!mAdaptor.isEnabled())
 		{
@@ -341,6 +351,7 @@ public class IHealthActivity extends  TabActivity {
 				};
 			}
 		});
+		*/
 		//		=================================================================================================
 
 
@@ -415,29 +426,29 @@ public class IHealthActivity extends  TabActivity {
 		return dateNow;
 	}
 	private AlertDialog getAlertDialog(String title,String message){
-		//���ͤ@��Builder����
+		//Builder
 		Builder builder = new AlertDialog.Builder(IHealthActivity.this);
-		//�]�wDialog�����D
+		//wDialog
 		builder.setTitle(title);
-		//�]�wDialog�����e
+		//wDialog
 		builder.setMessage(message);
-		//�]�wPositive���s���
+		//wPositive
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//���U���s����ܧ���
+				//
 				//				Toast.makeText(IHealthActivity.this, "�z���UOK���s", Toast.LENGTH_SHORT).show();
 			}
 		});
-		//�]�wNegative���s���
+		//wNegative
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//���U���s����ܧ���
+				//
 				//				Toast.makeText(IHealthActivity.this, "�z���UCancel���s", Toast.LENGTH_SHORT).show();
 			}
 		});
-		//�Q��Builder����إ�AlertDialog
+		//BuilderAlertDialog
 		builder.show();
 		return builder.create();
 	}
