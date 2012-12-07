@@ -13,7 +13,6 @@ public class DataQueue {
 	public Vector q;
 	public DataQueue(int len)
 	{
-		//q = new Vector(len);
 		queue = new int[len];
 		this.len = len-1;
 		pointer = len;

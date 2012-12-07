@@ -11,7 +11,6 @@ public class Calculation implements Runnable{
 
 
 	int ppt=0 , SBP = 0, DBP=0, HR=0;
-	//	DataQueue ecg , ppg;
 	public PipedInputStream pinECG, pinPPG;
 	public DataInputStream dinECG, dinPPG;
 	Handler mhandler;

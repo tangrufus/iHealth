@@ -33,7 +33,6 @@ class BP {
 			int[]	PeakECG = ecg.ecgPeak;
 			int		nFoot, nRight, nR, nPrevRight;
 			Boolean	bFound = false;
-			//		int		nDelay = g_config.m_nPPGDetectMethod == 2? 10 : 0;
 			int nDelay = 0;
 			nR = nFoot = nRight = nPrevRight = -1;
 			for (int i = 0; i < ecg.buffersize; i++)
@@ -88,8 +87,6 @@ class BP {
 	}
 	public void CalcBP()
 	{
-
-
 		// because m_nRT, m_nFT, m_nPTT are in millisecond
 		rt	= m_nRT / 1000.0;
 		ft	= m_nFT / 1000.0;
@@ -136,18 +133,16 @@ class BP {
 
 			if ((nSBP >= 60) && (nSBP <= 160))
 			{
-//				m_nSBP	= nSBP;
 				m_SBPQueue.push(nSBP);
 
 				if (nDBP >= 50 && nDBP <= 130)
 				{
-//					m_nDBP	= nDBP;
 					m_DBPQueue.push(nDBP);
 				}
 			}
 
 		}
-			}
+	}
 	
 	void Reset()
 	{

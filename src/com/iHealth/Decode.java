@@ -25,22 +25,14 @@ public class Decode implements  Runnable {
 	{
 		
 		int header;
-//		th = (byte) 0x7F;
 
 			DQ.push(b);
 			header = DQ.getHead();
-//			byte b = (byte) (header & 0x7F);
-//			byte c = (byte) (header & 0x80);
-//			byte d = (byte) 0x80;
-//			Boolean boo = ((header & 0x80) == 0x80);
-//			Boolean bo = ((byte)(header & 0x80) == 0x80);
 			if( (header & 0x80) == 0x80)
 			{
 				decode();
 				DQ.Clear();
 			}
-		
-
 	}
 	int ecg , ppg;
 	int count=0;
@@ -62,8 +54,6 @@ public class Decode implements  Runnable {
 		DQ.Clear();
 		count++;
 		
-//		coutECG.writeInt(ecg);
-//		coutPPG.writeInt(ppg);
 		if(count% 30==0){
 		try {
 			doutECG.writeInt(ecg);

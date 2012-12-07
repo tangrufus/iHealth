@@ -12,7 +12,6 @@ public class DoubleQ {
 	public Vector q;
 	public DoubleQ(int len)
 	{
-		//q = new Vector(len);
 		queue = new double[len];
 		this.len = len-1;
 		pointer = len;
