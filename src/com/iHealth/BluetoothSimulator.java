@@ -92,7 +92,7 @@ public class BluetoothSimulator implements Runnable{
 					}
 					count++;  
 				 
-			  System.out.println (decodedData[0]);
+			  //System.out.println (decodedData[0]);
 
 			  //System.out.println (decodedData[1]);
 			  }
