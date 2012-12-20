@@ -27,16 +27,6 @@ public class PPG {
         m_nValidBufSize = 0;
     }
 
-//	public void push(int i)
-//	{
-//		
-//		buffer.push(i);
-//		if(buffer.IsFull())
-//		{
-//			pushbulk(buffer.queue);
-//			DetectPeaks();
-//		}
-//	}
     public void pushbulk(int[] buffer) {
         System.arraycopy(ppg, samplesize, ppg, 0, samplesize * 3);
         System.arraycopy(ppgd1, samplesize, ppgd1, 0, samplesize * 3);
@@ -62,18 +52,12 @@ public class PPG {
 
         for (int i = samplesize * 3; i < buffersize - 3; i++) {
             ppgd1[i] = (-ppg[i + 2] + 8 * ppg[i + 1] - 8 * ppg[i - 1] + ppg[i - 2]) / 12.0;
-//            ecgd1[i] = mathtool.GetSlope(ecg, i, 20);
-//            System.out.println(ppgd1[i] +" "+ppg[i]);
-
         }
     }
 
     public void FirstDSlope() {
         for (int i = samplesize * 3; i < buffersize - 11; i++) {
             ppgd1[i] = mathtool.GetSlope(ppg, i, 20);
-//            ecgd1[i] = mathtool.GetSlope(ecg, i, 20);
-//            System.out.println(ecgd1[i] +" "+ecg[i]);
-
         }
     }
     int nParts;
@@ -114,16 +98,7 @@ public class PPG {
                                 m_bPPeakExist = true;
                                 FootOK = DetectFoot_fromDPPG(nA);
                                 RightOK = DetectRight_fromDPPG(nB);
-                                nA = nB = -1;							// reset A & B to unfound
-//                                if (!setpeak) {
-//                                    ppgPeak[nPos] = 10;
-//                                    setpeak = true;
-//                                }
-//                                if ((i + nGap) < buffersize) {
-//                                    i += (nGap - 1);
-//                                } else {
-//                                    break;
-//                                }
+                                nA = nB = -1;							// reset A & B to not found
                             }
                         }
                     }
@@ -132,7 +107,6 @@ public class PPG {
             }
         } catch (Exception e) {
         }
-
     }
 
     public void DetectPeakFromRaw() {
@@ -168,34 +142,21 @@ public class PPG {
                                 lastPeak = nPos;
                                 fPrevA = ppgd1[nA];
                                 m_bPPeakExist = true;
-//                                System.out.println("Peak: "+lastPeak + " nB:"+ nB);
                                 FootOK = DetectFootRawPPG(nA);
                                 RightOK = DetectRightRawPPG(nB);
-
 
                                 nA = nB = -1;							// reset A & B to unfound
                                 if (!setpeak) {
                                     ppgPeak[nPos] = 10;
                                     setpeak = true;
                                 }
-                                //                                if ((i + nGap) < buffersize) {
-//                                    i += (nGap - 1);
-//                                } else {
-//                                    break;
-//                                }
                             }
                         }
                     }
                 }
-//                ppgPeak[maxpos] = 10;
-
-
             }
         } catch (Exception e) {
         }
-
-
-
     }
 
     Boolean DetectFoot_fromDPPG(int nA) {
@@ -222,7 +183,6 @@ public class PPG {
 
         if (n > 0) {
             ppgPeak[n] = 4;
-//            System.out.println("Ft: "+n);
             return true;
         } else {
             return false;
@@ -235,12 +195,10 @@ public class PPG {
         while (mathtool.GetSlope(ppg, nB, 13) < 0 && nB < buffersize - 6) {
             n = ++nB;
         }
-
         if (n > 0) {
             ppgPeak[n] = 6;
             return true;
         }
-
         return false;
     }
 
@@ -249,12 +207,10 @@ public class PPG {
 
         while (mathtool.GetSlope(ppgd1, nB, 13) < 0 && nB < buffersize - 6) {
             n = ++nB;
-//            n++;
         }
 
         if (n > 0) {
             ppgPeak[n] = 6;
-//            System.out.println("R: "+n);
             return true;
         }
 
@@ -275,21 +231,14 @@ public class PPG {
         int nPeakCount = 0;
 
         for (int i = 0; i < buffersize; i++) {
-//            if (ppgPeak[i] == 1 || ppgPeak[i] == 2) {
-//                nPeakCount++;
-////                System.out.println(i);
-//            }
             if (ppgPeak[i] == 1 || ppgPeak[i] == 2) {
                 nPeakCount++;
             }
         }
 
-
-
         if (0 == nPeakCount) {
             return false;
         }
-//        System.out.println(nPeakCount);
         return (nPeakCount > hrsMin * m_nValidBufSize) && (nPeakCount < hrsMax * m_nValidBufSize);
     }
 

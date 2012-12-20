@@ -32,7 +32,6 @@ public class ECG {
 
     void Reset() {
         ecg = new int[buffersize];
-//		ecgD =new int[buffersize];
 
         ecgd1 = new double[buffersize];
         ecgPeak = new int[buffersize];
@@ -41,23 +40,9 @@ public class ECG {
         m_nValidBufSize = 0;
     }
 
-//    public void pushbuffer(int i) {
-//        buffer.push(i);
-//        if (buffer.IsFull()) {
-//            pushbulk(buffer.queue);
-//        
-//            DetectPeak();
-//            buffer.Clear();
-//            //System.out.println("ECG processed");
-//        }
-//    }
     public void pushbulk(int[] buff) {
 
-//        for (int i = 0; i < 3; i++) {
-//            System.arraycopy(ecg, samplesize * (i +1), ecg, samplesize * (i), samplesize);
-//            System.arraycopy(ecgPeak, samplesize * (i +1), ecgPeak, samplesize * (i), samplesize);
-//            System.arraycopy(ecgd1, samplesize * (i+1), ecgd1, samplesize * i, samplesize);
-//        }
+
         System.arraycopy(ecg, samplesize, ecg, 0, samplesize * 3);
         System.arraycopy(ecgPeak, samplesize, ecgPeak, 0, samplesize * 3);
         System.arraycopy(ecgd1, samplesize, ecgd1, 0, samplesize * 3);
@@ -77,22 +62,10 @@ public class ECG {
         }
     }
 
-//    public void pushbulk(double[] buff) {
-//        for (int i = 0; i < 3; i++) {
-//            System.arraycopy(ecgd1, samplesize * (i + 1), ecgd1, samplesize * i, samplesize);
-//
-//        }
-//        System.arraycopy(buff, 0, ecgd1, samplesize * 3, samplesize);
-//        ecgd1=FirstD(ecg,samplesize * 3,samplesize);
-//        
-//
-//    }
     public void FirstD() {
 
         for (int i = samplesize * 3; i < buffersize - 3; i++) {
             ecgd1[i] = (-ecg[i + 2] + 8 * ecg[i + 1] - 8 * ecg[i - 1] + ecg[i - 2]) / 12.0;
-//            ecgd1[i] = mathtool.GetSlope(ecg, i, 20);
-//            System.out.println(ecgd1[i] +" "+ecg[i]);
 
         }
     }
@@ -100,8 +73,6 @@ public class ECG {
     public void FirstDSlope() {
           for (int i = samplesize * 3; i < buffersize - 11; i++) {
             ecgd1[i] = mathtool.GetSlope(ecg, i, 20);
-//            ecgd1[i] = mathtool.GetSlope(ecg, i, 20);
-//            System.out.println(ecgd1[i] +" "+ecg[i]);
 
         }
     }
@@ -118,11 +89,6 @@ public class ECG {
             thresholdMax = fMeanMax * 0.65;
             threasholdMin = fMeanMin * 0.6;
             nA = nB = -1;
-            
-//            System.out.println("nParts:"+nPart+ " max:" + 
-//                    fMeanMax+" min:"+fMeanMin + " thmax:" + thresholdMax +" thmin:" + threasholdMin 
-//                    + " per%:"+mathtool.GetGreatThanPercent(ecgd1, (buffersize - stIndx), thresholdMax, stIndx)+ 
-//                    " st:"+stIndx );
 
             if (mathtool.GetGreatThanPercent(ecgd1, (buffersize - stIndx + 1), thresholdMax, stIndx) < 5.0) {
                 for (int i = stIndx + 1; i < buffersize - 1; i++) {
@@ -139,31 +105,22 @@ public class ECG {
 
                     if (nA > 0 && nB > 0 && nA < nB && nB < buffersize) // if both A & B found
                     {
-                        // DebugMessage("PrevA=%.3f, CurA=%.3f, ", fPrevA, m_d1ECG[nA + FILTER_LEN]);
                         // ensure that the peak is high enough to be an R-peak
                         if (fPrevA * 0.5 < ecgd1[nA + FILTER_LEN]) {
                             nPos = mathtool.GetMax(ecg, (nB - nA + 1), nA);
-//                            System.out.println("nPos:" + nPos);
                             // Get back to Raw ECG to locate the 
                             // maximum point ranging A to B as R peak
                             if ((nPos) < buffersize) {
                                 ecgPeak[nPos] = 2;					// mark down the R peak
                                 lastPeak = nPos;
-//                                System.out.println("RPEAK:" + lastPeak);
                                 fPrevA = ecgd1[nA + FILTER_LEN];
                                 m_bRPeakExist = true;
-//                                System.out.println("nA:"+nA + " nB"+ nB);
                                 nA = nB = -1;							// reset A & B to  
                             }
                         }
                     }
                 }
             }
-
-
-
-
-
         } catch (Exception e) {
         }
 
@@ -177,7 +134,6 @@ public class ECG {
         for (int i = 0; i < buffersize; i++) {
             if (ecgPeak[i] > 0) {
                 nPeakCount++;
-//                System.out.println("peakok: " + i);
             }
 
         }
@@ -187,7 +143,6 @@ public class ECG {
         if (0 == nPeakCount) {
             return false;
         }
-//        System.out.println(nPeakCount);
         return (nPeakCount > hrsMin * m_nValidBufSize) && (nPeakCount < hrsMax * m_nValidBufSize);
     }
 

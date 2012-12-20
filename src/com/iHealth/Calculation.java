@@ -11,7 +11,6 @@ public class Calculation implements Runnable{
 
 
 	int ppt=0 , SBP = 0, DBP=0, HR=0;
-	//	DataQueue ecg , ppg;
 	public PipedInputStream pinECG, pinPPG;
 	public DataInputStream dinECG, dinPPG;
 	Handler mhandler;
@@ -57,7 +56,6 @@ public class Calculation implements Runnable{
 			ppg.pushbulk(ppgbuffer.queue);
 			ecg.DetectPeak();
 			ppg.DetectDPeaks();
-			//                ppg.DetectPeakFromRaw();
 			ecgbuffer.Clear();
 			ppgbuffer.Clear();
 
@@ -125,6 +123,6 @@ public class Calculation implements Runnable{
 			}
 
 
-		}
+		}//end of while
 	}
 }

@@ -24,7 +24,6 @@ class HR {
 					if (nLastPeak >= 0)
 					{
 						hr = (int)(((double)(ecg.samplesize * 60) / (i - nLastPeak)) + 0.5); 
-//					 System.out.println("HR:" + hr);	
 												if (hr>=40 && hr<=160)
 													m_ECGHRQueue.push(hr);
 					}
@@ -36,17 +35,11 @@ class HR {
 			if(m_ECGHRQueue.IsFull()){
 			HRV = (int)m_ECGHRQueue.GetMean();}
 		}
-                /*
-                if (ECGOK)
-                    System.out.println("ECGOK");
-                else
-                    System.out.println("ECG_NOT_OK"); */
 	}
 
 	public void CalcHR_PPG(PPG ppg)
 	{
 		PPGOK = false;
-
 
 		if (ppg.PeaksOK())
 		{
@@ -70,7 +63,6 @@ class HR {
 					nLastPeak = i;
 				}
 			}
-
 			PPGOK = true;
 			if(m_PPGHRQueue.IsFull()){
 			HRV = (int)m_PPGHRQueue.GetMean(); 
@@ -103,7 +95,6 @@ class HR {
 					nLastPeak = i;
 				}
 			}
-
 			PPGOK = true;
 			HRV = (int)m_PPGHRQueue.GetMean();
 		}
