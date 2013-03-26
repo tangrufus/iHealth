@@ -4,29 +4,25 @@
 
 
 
-<ScrollView
+<ScrollView 
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
+	<LinearLayout 
+	android:id="@+id/linearLayout05"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout05"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/dataview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:text="~" />
 
-        <Button
-            android:id="@+id/Record"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Start" />
-    </LinearLayout>
-</ScrollView>
+		<ListView android:layout_height="wrap_content" android:id="@+id/listView1"
+			android:layout_width="fill_parent"></ListView>
+
+		<TextView android:id="@+id/dataview" android:orientation="vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:text="~"></TextView>
+			
+		<Button android:id="@+id/Record" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Record Data"></Button>
+			
+	</LinearLayout></ScrollView>
 
 </FrameLayout>

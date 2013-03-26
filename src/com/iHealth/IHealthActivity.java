@@ -84,9 +84,9 @@ public class IHealthActivity extends  TabActivity {
 	public static TextView textdata = null;
 	
 	
-	// private BluetoothChatService bltservice = null;
+	 private BluetoothChatService bltservice = null;
 	// use bluetooth simulator
-	private BluetoothSimulator bltservice = null;
+	//private BluetoothSimulator bltservice = null;
 	
 	SampleDynamicXYDatasource data = null;
 	public static final int resultHR = 0;
@@ -102,6 +102,18 @@ public class IHealthActivity extends  TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("MAIN__", "onCreat started");
+		
+		// ===========================================================================================
+		// set GUI
+		myTabhost=this.getTabHost();
+		LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), true);
+		myTabhost.addTab(
+
+				myTabhost.newTabSpec("blt config")
+				.setIndicator("Options")
+				.setContent(R.id.linearLayout05)
+				);
+		// ===========================================================================================
 		
 		poutBLT = new PipedOutputStream();
 		poutDecodeECG = new PipedOutputStream();
@@ -128,9 +140,9 @@ public class IHealthActivity extends  TabActivity {
 
 		//		  ===================================================================================================
 		
-		//bltservice = new BluetoothChatService(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
+		bltservice = new BluetoothChatService(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
 		// use bluetooth simulator
-		bltservice = new BluetoothSimulator(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
+		//bltservice = new BluetoothSimulator(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
 
 		CalHRBP = new Calculation(this, calHandler, 125, 75, 4000, pinCalECG, pinCalPPG);
 		new Thread(CalHRBP).start();
@@ -139,9 +151,9 @@ public class IHealthActivity extends  TabActivity {
 		/* Bluetooth connection */
 		// use bluetooth simulator
 		
-		new Thread(bltservice).start();
+		//new Thread(bltservice).start();
 		
-		/*
+		/* use real bluetooth */
 		mAdaptor = BluetoothAdapter.getDefaultAdapter();
 		if(!mAdaptor.isEnabled())
 		{
@@ -169,7 +181,8 @@ public class IHealthActivity extends  TabActivity {
 			Toast.makeText(this, "Size=" + pairedDevices.size(),
 					Toast.LENGTH_LONG).show();
 		}
-		list = (ListView)findViewById(R.id.listView1);
+		
+		list = (ListView) findViewById(R.id.listView1);
 		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , deviceNames));
 
 		list.setOnItemClickListener(new OnItemClickListener()
@@ -190,20 +203,11 @@ public class IHealthActivity extends  TabActivity {
 				};
 			}
 		});
-		*/
+		//*/
 		//		=================================================================================================
 
-		myTabhost=this.getTabHost();
-		LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), true);
-		myTabhost.addTab(
-
-				myTabhost.newTabSpec("blt config")
-				.setIndicator("Options")
-				.setContent(R.id.linearLayout05)
-				);
 		
 		rec = (Button) findViewById(R.id.Record);
-
 		rec.setOnClickListener(new View.OnClickListener() {
 
 			@Override
