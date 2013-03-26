@@ -16,6 +16,7 @@ import android.app.TabActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.webkit.WebView;
@@ -56,14 +57,7 @@ import com.iHealth.SampleDynamicXYDatasource;
 
 public class IHealthActivity extends  TabActivity {
 
-
-	private XYPlot dynamicPlot;
-	private MyPlotUpdater plotUpdater;
-	WebView wv;
 	private TabHost myTabhost;
-	Button zoom_in = null;
-	Button zoom_out = null;
-	TextView samplesize = null;
 	//	===================================================================================
 	private static final int REQUEST_ENABLE_BT = 3;
 	private String mac = "";
@@ -87,7 +81,9 @@ public class IHealthActivity extends  TabActivity {
 	public static final int MESSAGE_WRITE = 3;
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_TOAST = 5;
-	public static TextView textdata = null;// 
+	public static TextView textdata = null;
+	
+	
 	// private BluetoothChatService bltservice = null;
 	// use bluetooth simulator
 	private BluetoothSimulator bltservice = null;
@@ -105,8 +101,8 @@ public class IHealthActivity extends  TabActivity {
 	// ===========================================================================================
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myTabhost=this.getTabHost();
-
+		Log.d("MAIN__", "onCreat started");
+		
 		poutBLT = new PipedOutputStream();
 		poutDecodeECG = new PipedOutputStream();
 		poutDecodePPG =  new PipedOutputStream();
@@ -138,164 +134,7 @@ public class IHealthActivity extends  TabActivity {
 
 		CalHRBP = new Calculation(this, calHandler, 125, 75, 4000, pinCalECG, pinCalPPG);
 		new Thread(CalHRBP).start();
-		//		
-		//===================================================================================================
-
-		LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), true);
-		wv = (WebView) findViewById(R.id.wv);
-
-		myTabhost.addTab(
-				myTabhost.newTabSpec("Monitor")
-				.setIndicator("Monitor", getResources().getDrawable(R.drawable.png1))
-				.setContent(R.id.linearLayout01)
-				); 
-		myTabhost.addTab(
-				myTabhost.newTabSpec("Calibration")
-				.setIndicator("Calibration", getResources().getDrawable(R.drawable.png2))
-				.setContent(R.id.linearLayout02)
-				);
-		myTabhost.addTab(
-
-				myTabhost.newTabSpec("About Us")
-				.setIndicator("About Us", getResources().getDrawable(R.drawable.png3))
-				.setContent(R.id.linearLayout03)
-
-				);    
-		myTabhost.addTab(
-
-				myTabhost.newTabSpec("blt config")
-				.setIndicator("Options")
-				.setContent(R.id.linearLayout05)
-
-
-				);    
-
-
-		wv = (WebView) findViewById(R.id.wv);
-		wv.setWebViewClient(new WebViewClient() {			
-			public void onReceivedError(WebView view, 
-					int errorCode, String description, String failingUrl) {
-				Toast.makeText(IHealthActivity.this, "Sorry!" + description, Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		wv.loadUrl("http://bme.ee.cuhk.edu.hk/jcbme/index.htm");
-		final Button OkButton = (Button) findViewById(R.id.Button01);		
-		final EditText CEditText06=(EditText)findViewById(R.id.CEditText06);			
-		final TextView MTextView9 =(TextView)findViewById(R.id.MTextView9);	
-
-
-		//		  ===================================================================================================
-		// get handles to our View defined in layout.xml:
-		dynamicPlot = (XYPlot) findViewById(R.id.dynamicPlot);        
-		plotUpdater = new MyPlotUpdater(dynamicPlot);
-
-		dynamicPlot.getGraphWidget().setDomainValueFormat(new DecimalFormat("0"));
-
-		data = new SampleDynamicXYDatasource(pinPlotECG, pinPlotPPG);
-		final SampleDynamicSeries sine1Series = new SampleDynamicSeries(data, 0, "Sine 1");
-
-		dynamicPlot.addSeries(sine1Series, new LineAndPointFormatter(Color.BLUE, null, Color.TRANSPARENT));
-		dynamicPlot.setGridPadding(0, 0, 0, 0);
-		data.addObserver(plotUpdater);
-
-		dynamicPlot.setDomainStepMode(XYStepMode.SUBDIVIDE);
-		dynamicPlot.setDomainStepValue(sine1Series.size());
-
-		// thin out domain/range tick labels so they dont overlap each other:
-		dynamicPlot.setTicksPerDomainLabel(5);
-		dynamicPlot.setTicksPerRangeLabel(3);
-		dynamicPlot.disableAllMarkup();
-
-		// freeze the range boundaries:
-		dynamicPlot.setRangeBoundaries(0, 1000, BoundaryMode.AUTO);
-
-		dynamicPlot.getGraphWidget().getDomainLabelPaint().setAlpha(0);
-		dynamicPlot.getGraphWidget().setDomainLabelTickExtension(0);
-		dynamicPlot.getGraphWidget().getDomainOriginLinePaint().setAlpha(0);
-		dynamicPlot.getGraphWidget().getDomainLabelPaint().setAlpha(0);
-
-		dynamicPlot.getGraphWidget().getRangeLabelPaint().setAlpha(0);
-		dynamicPlot.getGraphWidget().getDomainLabelPaint().setAlpha(0);
-		dynamicPlot.getGraphWidget().setRangeLabelTickExtension(0);
-		dynamicPlot.getGraphWidget().getRangeOriginLinePaint().setAlpha(0);
-
-
-		dynamicPlot.getGraphWidget().getRangeLabelPaint().setAlpha(0);
-
-		dynamicPlot.getGraphWidget().getCursorLabelBackgroundPaint().setAlpha(0);
-		dynamicPlot.getDomainLabelWidget().setVisible(false);
-		dynamicPlot.getRangeLabelWidget().setVisible(false);
-		dynamicPlot.getBorderPaint().setAlpha(0);
-		dynamicPlot.getLegendWidget().setVisible(false);
-		dynamicPlot.getGraphWidget().setGridBackgroundPaint(null);
-		dynamicPlot.setBorderStyle(BorderStyle.NONE, null, null);
-		dynamicPlot.getBorderPaint().setColor(Color.WHITE);
-
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		zoom_in = (Button) findViewById(R.id.zoom_in);
-		zoom_out = (Button) findViewById(R.id.zoom_out);
-		samplesize = (TextView)findViewById(R.id.sampsize);
-		zoom_in.setOnClickListener(
-				new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if (size > 6)
-							size -=2;
-						bltservice.Changesamplesize(size);
-						samplesize.setText("Sampling size = "+ size);
-
-					}
-				});
-		zoom_out.setOnClickListener(
-				new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if (size <50)
-							size +=2;
-						bltservice.Changesamplesize(size);
-						samplesize.setText("Sampling size = "+ size);
-					}
-				});
-		dynamicPlot.setOnClickListener(
-				new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						data.channelswitch();
-						if(data.chan)
-						{
-							dynamicPlot.setTitle("ECG");
-
-
-						}
-						else{
-							dynamicPlot.setTitle("PPG");
-						}
-
-					}
-				});
-
-		//		  ===================================================================================================
-
 		new Thread(data).start();
-
-
-		//		  ===================================================================================================
-		OkButton.setOnClickListener(
-				new View.OnClickListener()
-				{ 
-					public void onClick(View v){ 					
-						String CEditText06str=CEditText06.getText().toString();		
-						MTextView9.setText(CEditText06str);
-					} 
-				}); 
-		//		====================================================================================================
 
 		/* Bluetooth connection */
 		// use bluetooth simulator
@@ -354,7 +193,15 @@ public class IHealthActivity extends  TabActivity {
 		*/
 		//		=================================================================================================
 
+		myTabhost=this.getTabHost();
+		LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), true);
+		myTabhost.addTab(
 
+				myTabhost.newTabSpec("blt config")
+				.setIndicator("Options")
+				.setContent(R.id.linearLayout05)
+				);
+		
 		rec = (Button) findViewById(R.id.Record);
 
 		rec.setOnClickListener(new View.OnClickListener() {
@@ -363,55 +210,28 @@ public class IHealthActivity extends  TabActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String text = rec.getText().toString();
-				if(text.equals("Record Data")){
-					rec.setText("Stop Recording");
+				if(text.equals("Start")){
+					rec.setText("Recording...");
 					String filename = getTime("yyyyMMMddHmm");
 
 					try {
 						bltservice.saveData.CreatFile(filename);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
+						Log.e("MAIN__", "Createfile failed");
 						e.printStackTrace();
 					}
-					bltservice.Records = true;}
-				else 
-				{
-					rec.setText("Record");
+					
+					bltservice.Records = true;
+					Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
+				}
+				else {
+					Log.d("MAIN__", "save done");
+					rec.setText("Done!");
 					bltservice.saveData.EndSave();
 					bltservice.Records = false;
+					Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
 				}	
-			}
-		});
-		Button Ecall = (Button) findViewById(R.id.Dial);
-		Ecall.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:66983226"));
-
-				startActivity(dialIntent);
-
-			}
-		});
-
-		Button Email = (Button) findViewById(R.id.Email);
-		Email.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(Intent.ACTION_SEND);
-				i.setType("text/plain");
-				i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"waadiox@gmail.com"});
-				i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-				i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-			
-				try {
-					startActivity(Intent.createChooser(i, "Send mail..."));
-				} catch (android.content.ActivityNotFoundException ex) {
-
-				}
 			}
 		});
 
@@ -469,12 +289,12 @@ public class IHealthActivity extends  TabActivity {
 					break;
 				case BluetoothChatService.STATE_LISTEN:
 				case BluetoothChatService.STATE_NONE:
-					final TextView SBPV = (TextView)findViewById(R.id.SBPV);
-					final TextView DBPV = (TextView)findViewById(R.id.DBPV);
-					final TextView HRV = (TextView)findViewById(R.id.HRV);
-					SBPV.setText("--");
-					DBPV.setText("--");
-					HRV.setText("--");
+					//final TextView SBPV = (TextView)findViewById(R.id.SBPV);
+					//final TextView DBPV = (TextView)findViewById(R.id.DBPV);
+					//final TextView HRV = (TextView)findViewById(R.id.HRV);
+					//SBPV.setText("--");
+					//DBPV.setText("--");
+					//HRV.setText("--");
 					break;
 				}
 				break;
@@ -582,25 +402,25 @@ public class IHealthActivity extends  TabActivity {
 		@Override
 		public void handleMessage(Message msg)
 		{
-			int[] results = (int[]) msg.obj;
-			final TextView SBPV = (TextView)findViewById(R.id.SBPV);
-			final TextView DBPV = (TextView)findViewById(R.id.DBPV);
-			final TextView HRV = (TextView)findViewById(R.id.HRV);
+		//	int[] results = (int[]) msg.obj;
+		//	final TextView SBPV = (TextView)findViewById(R.id.SBPV);
+		//	final TextView DBPV = (TextView)findViewById(R.id.DBPV);
+		//	final TextView HRV = (TextView)findViewById(R.id.HRV);
 			
-			switch(msg.what)
-			{case resultHR:				
-				if(results[0]!=-1 && results[0]>=40){
-					HRV.setText(results[0]+"");}
-				else{HRV.setText("--");}
+			//switch(msg.what)
+			//{case resultHR:				
+			//	if(results[0]!=-1 && results[0]>=40){
+			//		HRV.setText(results[0]+"");}
+			//	else{HRV.setText("--");}
 
-				if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50){
-					SBPV.setText(results[2]+"");DBPV.setText(results[3]+"");}
-				else{
-					SBPV.setText("--");DBPV.setText("--");	
-				}
-				break;
+			//	if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50){
+			//		SBPV.setText(results[2]+"");DBPV.setText(results[3]+"");}
+			//	else{
+			//		SBPV.setText("--");DBPV.setText("--");	
+			//	}
+			//	break;
 
-			}
+		//	}
 
 		}
 	};

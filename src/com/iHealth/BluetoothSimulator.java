@@ -88,6 +88,7 @@ public class BluetoothSimulator implements Runnable{
 					
 					if(Records)
 					{
+						Log.d("Blt Sim__", "Recoeds == true");
 						saveData.WriteTxt(decodedData[0]+","+decodedData[1]+"\r\n" );
 					}
 					count++;  

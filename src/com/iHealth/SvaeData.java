@@ -4,6 +4,7 @@ import java.io.*;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -14,37 +15,41 @@ public class SvaeData {
 	OutputStreamWriter myOutWriter;
 
 
-	public void WriteTxt( String text)
-	{try{
+	public void WriteTxt( String text) {
+		try{
+			Log.d("SaveData__", "writing: " + text);
+			myOutWriter.append(text);
+		} catch(Exception e) {
+			Log.d("SaveData__", "can't writeTxt");
+			e.printStackTrace();
+		}
 
-		
-		myOutWriter.append(text);
-
-		//		Toast.makeText(getBaseContext(),
-		//				"Done writing SD 'mysdfile.txt'",
-		//				SToast.LENGTH_SHORT).show();
-		//	} catch (Exception e) {
-		//		Toast.makeText(getBaseContext(), e.getMessage(),
-		//				Toast.LENGTH_SHORT).show();
-	}catch(Exception e){}
-
-	}	public void CreatFile(String FileName) throws IOException
-	{		try{
+	}	
+	
+	public void CreatFile(String FileName) throws IOException
+	{		
+		try{
 			new File("/sdcard/IHealthRecord").mkdir();
+		} catch(Exception e) {
+			Log.d("SaveData__", "can't CreatFile");
+			e.printStackTrace();
 		}
 		
-		catch(Exception e){}
-	String str = Environment.getExternalStorageDirectory().toString();
+		String str = Environment.getExternalStorageDirectory().toString();
 		myFile= new File(Environment.getExternalStorageDirectory(),"/IHealthRecord/"+FileName+".txt");
 		
-	
 		fOut = new FileOutputStream(myFile);
 		myOutWriter =new OutputStreamWriter(fOut);
 
 	}
-	public void EndSave() 
-	{try{
-				myOutWriter.close();
-		fOut.close();}catch(Exception e){}
+	
+	public void EndSave() {
+		try {
+			myOutWriter.close();
+			fOut.close();
+		} catch(Exception e){
+			Log.d("SaveData__", "can't end save");
+			e.printStackTrace();
+		}
 	}
 	}
