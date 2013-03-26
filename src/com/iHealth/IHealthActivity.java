@@ -526,12 +526,7 @@ public class IHealthActivity extends  TabActivity {
 			this.plot = plot;
 		}
 		public void update(Observable o, Object arg) {
-			try {
-
-				plot.postRedraw();
-			} catch (InterruptedException e) {
-				e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-			}
+			plot.redraw();
 		}
 	}
 
