@@ -36,7 +36,7 @@ public class SvaeData {
 		}
 		
 		String str = Environment.getExternalStorageDirectory().toString();
-		myFile= new File(Environment.getExternalStorageDirectory(),"/IHealthRecord/"+FileName+".txt");
+		myFile= new File(Environment.getExternalStorageDirectory(),"/IHealthRecord/"+FileName+".csv");
 		
 		fOut = new FileOutputStream(myFile);
 		myOutWriter =new OutputStreamWriter(fOut);
