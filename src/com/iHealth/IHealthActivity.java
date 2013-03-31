@@ -1,7 +1,9 @@
 package com.iHealth;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.sql.DriverManager;
@@ -92,16 +94,32 @@ public class IHealthActivity extends  TabActivity {
 	// use bluetooth simulator
 	private BluetoothSimulator bltservice = null;
 	
-	SampleDynamicXYDatasource data = null;
 	public static final int resultHR = 0;
 	public static final int resultBP = 1;
 	public static final int resultSBP = 2;
 	public static final int resultDBP = 3;
-	Calculation CalHRBP =null;
+	Calculation CalHRBP = null;
 	Button rec = null;
 	//===========================================================================================	
 	public PipedInputStream pinDecode,  pinPlotECG, pinPlotPPG, pinCalECG, pinCalPPG;
 	public PipedOutputStream poutBLT, poutDecodeECG,poutDecodePPG,poutCECG, poutCPPG;
+	// ===========================================================================================
+	private int[] SBPV = new int[3000];
+	private int[] DBPV = new int[3000];
+	private int[] HRV = new int[3000];
+	
+	private int iSBPV =0;
+	private int iDBPV =0;
+	private int iHRV =0;
+	
+	private int mSBPV =0;
+	private int mDBPV =0;
+	private int mHRV =0;
+	
+//	Thread TCalHRBP = new Thread(CalHRBP); 
+//	Thread Tbltservice = new Thread(bltservice);
+	
+	
 	// ===========================================================================================
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -137,13 +155,7 @@ public class IHealthActivity extends  TabActivity {
 		bltservice = new BluetoothSimulator(this, mHandler,poutDecodeECG, poutDecodePPG, poutCECG,poutCPPG);
 
 		CalHRBP = new Calculation(this, calHandler, 125, 75, 4000, pinCalECG, pinCalPPG);
-		new Thread(CalHRBP).start();
-		new Thread(data).start();
 
-		/* Bluetooth connection */
-		// use bluetooth simulator
-		
-		new Thread(bltservice).start();
 		
 		/*
 		mAdaptor = BluetoothAdapter.getDefaultAdapter();
@@ -215,28 +227,43 @@ public class IHealthActivity extends  TabActivity {
 				// TODO Auto-generated method stub
 				String text = rec.getText().toString();
 				if(text.equals("Start")){
-					rec.setText("Recording...");
-					filename = getTime("yyyyMMMddHmm");
-
 					try {
+						filename = getTime("yyyyMMMddHmm");
 						bltservice.saveData.CreatFile(filename);
+						rec.setText("Recording...");
+						bltservice.Records = true;
+						Thread TCalHRBP = new Thread(CalHRBP); 
+						TCalHRBP.start();
+						Thread Tbltservice = new Thread(bltservice);
+						Tbltservice.start();
+						Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						Log.e("MAIN__", "Createfile failed");
 						e.printStackTrace();
 					}
-					
-					bltservice.Records = true;
-					Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
 				}
-				else {
-					Log.d("MAIN__", "save done");
-					rec.setText("Done!");
+				else if(text.equals("Recording...")){
+					Log.d("MAIN__", "local save done");
+					rec.setText("mSBPV, mDBPV, mHRV = " + mSBPV +", " + mDBPV +", " + mHRV);
 					bltservice.saveData.EndSave();
 					bltservice.Records = false;
 					Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
-					access();
+					CalHRBP.Continue = false;
+					//TCalHRBP.join();
+					//
+					/* for real bluetooth connection only
+					try {
+						Tbltservice.Continue = false;
+						Tbltservice.join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					*/
+					MySQL.access(filename);
 					Log.d("MAIN__", "mysql saving");
+					
 				}	
 			}
 		});
@@ -326,11 +353,6 @@ public class IHealthActivity extends  TabActivity {
 	public int[] ECG = new int[3000];
 	public int[] PPG = new int[3000];
 
-
-
-
-
-
 	//	  ===================================================================================================
 	static final String HEXES = "0123456789ABCDEF";
 	public static String getHex( byte [] raw ) {
@@ -343,17 +365,6 @@ public class IHealthActivity extends  TabActivity {
 			.append(HEXES.charAt((b & 0x0F)));
 		}
 		return hex.toString();
-	}
-	//	  ===================================================================================================
-	// redraws a plot whenever an update is received:
-	private class MyPlotUpdater implements Observer {
-		Plot plot;
-		public MyPlotUpdater(Plot plot) {
-			this.plot = plot;
-		}
-		public void update(Observable o, Object arg) {
-			plot.redraw();
-		}
 	}
 
 	//	  ===================================================================================================
@@ -376,7 +387,7 @@ public class IHealthActivity extends  TabActivity {
 
 	}
 	int ecg , ppg;
-	int count=0;
+	//int count=0;
 	short checksum;
 	public void decode()
 	{
@@ -396,74 +407,61 @@ public class IHealthActivity extends  TabActivity {
 			ppg = ((DQ.queue[2] & 0x07) << 7) + (DQ.queue[3] & 0x7F);
 			
 		}
-		count++;
-		if (count%size==0);
-		data.update(ecg, ppg);
+		//count++;
 		checksum = 0;
 	}
 	public final Handler calHandler = new Handler()
 	{
-
-
 		@Override
 		public void handleMessage(Message msg)
 		{
-		//	int[] results = (int[]) msg.obj;
-		//	final TextView SBPV = (TextView)findViewById(R.id.SBPV);
-		//	final TextView DBPV = (TextView)findViewById(R.id.DBPV);
-		//	final TextView HRV = (TextView)findViewById(R.id.HRV);
-			
-			//switch(msg.what)
-			//{case resultHR:				
-			//	if(results[0]!=-1 && results[0]>=40){
-			//		HRV.setText(results[0]+"");}
-			//	else{HRV.setText("--");}
+			int[] results = (int[]) msg.obj;
+	
+			switch(msg.what) {
+				case resultHR:				
+					if(results[0]!=-1 && results[0]>=40){
+						HRV[iHRV++]=results[0];
+						Log.e("MAIN__", "HRV =" + results[0]);
+					} else {
+						Log.e("MAIN__", "HRV = ERROR");
+					}
 
-			//	if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50){
-			//		SBPV.setText(results[2]+"");DBPV.setText(results[3]+"");}
-			//	else{
-			//		SBPV.setText("--");DBPV.setText("--");	
-			//	}
-			//	break;
-
-		//	}
-
+					if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50) {
+						SBPV[iSBPV++] = results[2];
+						DBPV[iDBPV++] = results[3];
+						Log.e("MAIN__", "SBPV, DBPV =" + results[2] +", " + results[3]);
+					} else {
+						Log.e("MAIN__", "SBPV = ERROR && DBPV = ERROR");
+					}
+				break;
+			}
 		}
 	};
 
-	public void access() {
+	
+	
+	private void getResults() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = null;
-			connection = (Connection) DriverManager.getConnection(
-					"jdbc:mysql://172.16.0.103:8889/iHealth", "root", "root");
-			//Statement st = (Statement) connection.createStatement();
-			String path = Environment.getExternalStorageDirectory()
-					.getAbsolutePath();
-			File file = new File(Environment.getExternalStorageDirectory(),"/IHealthRecord/"+ filename +".csv");
+			mSBPV = getMean(iSBPV, SBPV);
+			mDBPV = getMean(iDBPV, DBPV);
+			mHRV = getMean(iHRV, HRV);
+			Log.d("MAIN__", "mSBPV, mDBPV, mHRV = " + mSBPV +", " + mDBPV +", " + mHRV);
 			
-			InputStream is = null;
-
-			is = new BufferedInputStream(new FileInputStream(file));
-
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(is));
-
-			String line;
-			int i=0;
-			while ((line = reader.readLine()) != null) {
-				// do something with "line"
-				
-				String[] RowData = line.split(",");
-				String sql = "insert into raw values ('" + filename+ "'," + i++ + "," + RowData[0] + "," + RowData[1] + ");";
-				PreparedStatement ps = (PreparedStatement) connection.prepareStatement(sql);
-				ps.executeUpdate();
-
-			}
 		} catch (Exception e) {
+			Log.e("MAIN__", "can't get mean result");
 			e.printStackTrace();
 		}
 
+	}
+	
+	private int getMean(int count, int[] array) {
+		int sum=0;
+		for (int i=0; i<count; i++) {
+			sum += array[i];
+		}
+		
+		return sum/count;
+		
 	}
 
 }

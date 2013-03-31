@@ -7,9 +7,10 @@ import android.os.Handler;
 import android.util.Log;
 import com.iHealth.R;
 
-public class Calculation implements Runnable{
+public class Calculation extends Thread {
 
 
+	public volatile Boolean Continue = false;
 	int ppt=0 , SBP = 0, DBP=0, HR=0;
 	public PipedInputStream pinECG, pinPPG;
 	public DataInputStream dinECG, dinPPG;
@@ -40,15 +41,17 @@ public class Calculation implements Runnable{
 	int count=0, count2 =0;
 	public void run()
 	{
+		Log.d(this.getClass().getName(), "Thread Started");
+		Continue = true;
 		hr = new HR();
 		bp = new BP(SBP0,DBP0);
 		bp.Calibrate();
 		DataQueue ecgbuffer = new DataQueue(500), ppgbuffer = new DataQueue(500);
-		while(true){
+		while(Continue){
 			try{
 				ecgbuffer.push(dinECG.readInt());
 				ppgbuffer.push(dinPPG.readInt());
-			}catch(Exception e){};
+			}catch(Exception e){ e.printStackTrace(); };
 
 
 			if(ecgbuffer.IsFull()&&ppgbuffer.IsFull())
@@ -100,6 +103,7 @@ public class Calculation implements Runnable{
 
 				}catch (Exception e) {
 					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 			else
@@ -120,9 +124,11 @@ public class Calculation implements Runnable{
 			ecg.ResetNewPeaks();
 			ppg.ResetNewPeaks();
 			mhandler.obtainMessage(IHealthActivity.resultHR, results).sendToTarget();
+			Log.d("CALCULATION__", "result cal-ed");
 			}
 
 
 		}//end of while
+		Log.d("CALCULATION__", "CalThread end");
 	}
 }

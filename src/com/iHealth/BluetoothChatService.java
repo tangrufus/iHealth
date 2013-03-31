@@ -53,7 +53,7 @@ public class BluetoothChatService {
 	public static Boolean Records = false;
 	public static String Filename = "";
 	public int samplesize = 8;
-	public static SvaeData saveData = null;
+	public static SaveData saveData = null;
 	/**
 	 * Constructor. Prepares a new BluetoothChat session.
 	 * @param context  The UI Activity Context
@@ -67,7 +67,7 @@ public class BluetoothChatService {
 		doutPPG = new DataOutputStream(outppg);
 		doutCecg = new DataOutputStream(outCecg);
 		doutCppg = new DataOutputStream(outCppg);
-		saveData = new SvaeData();
+		saveData = new SaveData();
 		
 //		doutDecode = new DataOutputStream(outDecode);
 	}

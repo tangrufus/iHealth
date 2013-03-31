@@ -9,7 +9,7 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.iHealth.R;
-public class SvaeData {
+public class SaveData {
 	File myFile;
 	FileOutputStream fOut;
 	OutputStreamWriter myOutWriter;

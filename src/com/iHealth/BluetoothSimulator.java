@@ -1,8 +1,6 @@
 package com.iHealth;
 
 import java.io.*;
-import java.io.IOException;
-import java.io.InputStream;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Handler;
@@ -20,7 +18,7 @@ public class BluetoothSimulator implements Runnable{
 	public static Boolean Records = false;
 	public static String Filename = "";
 	public int samplesize = 8;
-	public static SvaeData saveData = null;
+	public static SaveData saveData = null;
 	
 	Filter filtecg = new Filter(), filtppg= new Filter();
 	
@@ -34,7 +32,7 @@ public class BluetoothSimulator implements Runnable{
 		doutPPG = new DataOutputStream(outppg);
 		doutCecg = new DataOutputStream(outCecg);
 		doutCppg = new DataOutputStream(outCppg);
-		saveData = new SvaeData();
+		saveData = new SaveData();
 	}
 	
 	public void Changesamplesize(int size)
