@@ -20,7 +20,7 @@ public class MySQL {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = null;
 			connection = (Connection) DriverManager.getConnection(
-					"jdbc:mysql://172.16.0.102:8889/iHealth", "root", "root");
+					"jdbc:mysql://172.16.0.102:3306/iHealth", "root", "root");
 			// Statement st = (Statement) connection.createStatement();
 			String path = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
@@ -40,7 +40,7 @@ public class MySQL {
 				// do something with "line"
 
 				String[] RowData = line.split(",");
-				String sql = "insert into raw values ('" + filename + "',"
+				String sql = "insert into raws (uid, sequence, ecg, ppg) values ('" + filename + "',"
 						+ i++ + "," + RowData[0] + "," + RowData[1] + "); ";
 
 				Log.d("MAIN__", sql);
@@ -51,7 +51,7 @@ public class MySQL {
 			}
 
 			((PreparedStatement) connection
-					.prepareStatement("insert into result values ('" + filename
+					.prepareStatement("insert into results (uid, sbpv, dbpv, hrv) values ('" + filename
 							+ "'," + (int) (Math.random()*100) + "," + 110 + "," + 91 + ");"))
 					.execute();
 		} catch (Exception e) {
