@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
-
-<ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:measureAllChildren="false" >
 
     <LinearLayout
         android:id="@+id/linearLayout05"
@@ -15,9 +13,14 @@
         <EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start" 
-            android:ems="10" >
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="center"
+            android:text="Start"
+            android:textSize="25sp"
+            android:textStyle="normal"
+            android:typeface="serif" >
 
             <requestFocus />
         </EditText>
@@ -25,9 +28,13 @@
         <Button
             android:id="@+id/Record"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Start" />
+            android:layout_height="68dp"
+            android:layout_weight="0.05"
+            android:text="Start"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
     </LinearLayout>
-</ScrollView>
 
 </FrameLayout>

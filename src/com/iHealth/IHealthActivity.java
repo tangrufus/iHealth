@@ -262,7 +262,7 @@ public class IHealthActivity extends  TabActivity {
 					}
 					*/
 					MySQL.access(filename);
-					Log.d("MAIN__", "mysql saving");
+					Log.d("MAIN__", "mysql saved");
 					
 				}	
 			}

@@ -5,7 +5,6 @@ import java.io.*;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-import com.iHealth.R;
 
 public class Calculation extends Thread {
 

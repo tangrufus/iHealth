@@ -1,16 +1,13 @@
 package com.iHealth;
 
-import com.iHealth.R;
 import java.io.*;
-import java.math.BigInteger;
 import java.util.Vector;
 
 public class DataQueue {
-	private int count;
 	public int[] queue;
 	int len;
 	int pointer;
-	public Vector q;
+	public Vector<Integer> q;
 	public DataQueue(int len)
 	{
 		queue = new int[len];

@@ -1,11 +1,9 @@
 package com.iHealth;
 
 import java.io.*;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-import com.iHealth.R;
 
 public class BluetoothSimulator implements Runnable{
 
@@ -66,41 +64,41 @@ public class BluetoothSimulator implements Runnable{
 					  decodedData[i] = Integer.parseInt(strArray[i]);
 				  }
 				  
-					try {
-						doutCecg.writeInt(filtecg.Filt(decodedData[0]));
-						doutCppg.writeInt(filtppg.Filt(decodedData[1]));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+//					try {
+//						doutCecg.writeInt(filtecg.Filt(decodedData[0]));
+//						doutCppg.writeInt(filtppg.Filt(decodedData[1]));
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
 					
-					if(count% samplesize==0){
-						try {
-							doutECG.writeInt(decodedData[0]);
-							doutPPG.writeInt(decodedData[1]);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
+//					//if(count% samplesize==0){
+//						//try {
+//							//doutECG.writeInt(decodedData[0]);
+//							//doutPPG.writeInt(decodedData[1]);
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
 					
 					if(Records)
 					{
-						Log.d("Blt Sim__", "Recoeds == true");
+						Log.d("Blt Sim__", "Recoeds == true  " + count);
 						saveData.WriteTxt(decodedData[0]+","+decodedData[1]+"\r\n" );
 					}
 					count++;  
 				 
-			  //System.out.println (decodedData[0]);
-
-			  //System.out.println (decodedData[1]);
-			  }
-			  //Close the input stream
-			  in.close();
-			    }catch (Exception e){//Catch exception if any
-			  Log.d("BLUSIM", "can't read csv file!!!!!");
-			  System.out.println ("can't read csv file");
-			  System.err.println("Error: " + e.getMessage());
+					//System.out.println (decodedData[0]);
+					//System.out.println (decodedData[1]);
+			  	}
+			  	//Close the input stream
+			  	in.close();
+			  } catch (Exception e){//Catch exception if any
+				  Log.e("BLUSIM", "can't read csv file!!!!!");
+				  Log.e("BLUSIM", "Error: " + e.getMessage());
+				  System.out.println ("can't read csv file");
+				  System.err.println("Error: " + e.getMessage());
 			  }//end of while loop
 
 	}

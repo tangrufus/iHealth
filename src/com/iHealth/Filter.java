@@ -1,10 +1,8 @@
 package com.iHealth;
 
-import com.iHealth.R;
-
 public class Filter {
 	
-	DataQueue filter = new DataQueue(10);
+	DataQueue filter = new DataQueue(50);
 	
 	public int Filt(int n)
 	{
