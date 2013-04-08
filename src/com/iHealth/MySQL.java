@@ -47,7 +47,6 @@ public class MySQL {
 				ps.setInt(3, Integer.parseInt(RowData[0]));
 				ps.setInt(4, Integer.parseInt(RowData[1]));
 				ps.addBatch();
-				// Log.d("MAIN__", sql);
 				
 				if (((i % 1000) == 0)) {
 					ps.executeBatch();

@@ -10,20 +10,20 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText1"
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
+            android:layout_height="360dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:gravity="center"
-            android:text="Start"
-            android:textSize="25sp"
-            android:textStyle="normal"
-            android:typeface="serif" >
-
-            <requestFocus />
-        </EditText>
+            android:longClickable="false"
+            android:scrollHorizontally="false"
+            android:selectAllOnFocus="false"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="25sp" />
 
         <Button
             android:id="@+id/Record"

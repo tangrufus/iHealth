@@ -100,6 +100,7 @@ public class IHealthActivity extends  TabActivity {
 	public static final int resultDBP = 3;
 	Calculation CalHRBP = null;
 	Button rec = null;
+	TextView display = null;
 	//===========================================================================================	
 	public PipedInputStream pinDecode,  pinPlotECG, pinPlotPPG, pinCalECG, pinCalPPG;
 	public PipedOutputStream poutBLT, poutDecodeECG,poutDecodePPG,poutCECG, poutCPPG;
@@ -179,7 +180,6 @@ public class IHealthActivity extends  TabActivity {
 				// ListView
 				deviceMacs.add(device.getAddress());
 				deviceNames.add(device.getName());
-
 			}
 		} else {
 			Toast.makeText(this, "Size=" + pairedDevices.size(),
@@ -194,15 +194,11 @@ public class IHealthActivity extends  TabActivity {
 				mac = deviceMacs.get(deviceNames.indexOf(list.getItemAtPosition(position)));
 				mDevice = mAdaptor.getRemoteDevice(mac);
 				try{
-
 					bltservice.connect(mDevice);
-
-
 				}
 				catch(Exception e)
 				{
 					getAlertDialog("state","connection fail");
-
 				};
 			}
 		});
@@ -219,7 +215,9 @@ public class IHealthActivity extends  TabActivity {
 				);
 		
 		rec = (Button) findViewById(R.id.Record);
+		display = (TextView) findViewById(R.id.textView1);
 
+		
 		rec.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -231,6 +229,7 @@ public class IHealthActivity extends  TabActivity {
 						filename = getTime("yyyyMMMddHmm");
 						bltservice.saveData.CreatFile(filename);
 						rec.setText("Recording...");
+						display.setText("OKOKOK");
 						bltservice.Records = true;
 						Thread TCalHRBP = new Thread(CalHRBP); 
 						TCalHRBP.start();
