@@ -1,80 +1,51 @@
 package com.iHealth;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.sql.DriverManager;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Set;
-import java.util.UUID;
 import java.io.*;
 import java.util.Vector;
 
 
+import android.annotation.SuppressLint;
 import android.app.TabActivity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.graphics.Color;
-import android.app.Activity;
 import android.view.View;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
+//import android.bluetooth.BluetoothAdapter;
+//import android.bluetooth.BluetoothDevice;
+//import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import com.androidplot.Plot;
-import com.androidplot.Plot.BorderStyle;
-import com.androidplot.ui.SizeLayoutType;
-import com.androidplot.xy.*;
 import com.iHealth.R;
-import com.iHealth.SampleDynamicSeries;
-import com.iHealth.SampleDynamicXYDatasource;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 
 
+
+@SuppressLint("SimpleDateFormat")
 public class IHealthActivity extends  TabActivity {
 
 	private TabHost myTabhost;
-	private String filename;
+	private String filename, uid;
 	//	===================================================================================
-	private static final int REQUEST_ENABLE_BT = 3;
-	private String mac = "";
-	private Vector<String> deviceMacs = new Vector<String>();
-	private Vector<String> deviceNames = new Vector<String>();
-	private BluetoothAdapter mAdaptor = null;
-	BluetoothDevice mDevice = null;
-	BluetoothSocket mSocket = null;
+	//private static final int REQUEST_ENABLE_BT = 3;
+	//private String mac = "";
+	//private Vector<String> deviceMacs = new Vector<String>();
+	//private Vector<String> deviceNames = new Vector<String>();
+	//private BluetoothAdapter mAdaptor = null;
+	//BluetoothDevice mDevice = null;
+	//BluetoothSocket mSocket = null;
 	ListView list = null;
 	TextView tv = null;
-	@SuppressWarnings("unused")
 	InputStream is;
 	byte buffer[] = new byte[1024];
 	int bytes;
@@ -117,6 +88,10 @@ public class IHealthActivity extends  TabActivity {
 	private int mDBPV =0;
 	private int mHRV =0;
 	
+	private int bsSBPV = getRandomInt(90, 119);
+	private int bsDBPV = getRandomInt(60, 79);
+	private int bsHRV = getRandomInt(65, 95);
+	
 //	Thread TCalHRBP = new Thread(CalHRBP); 
 //	Thread Tbltservice = new Thread(bltservice);
 	
@@ -125,7 +100,6 @@ public class IHealthActivity extends  TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("MAIN__", "onCreat started");
-		
 		poutBLT = new PipedOutputStream();
 		poutDecodeECG = new PipedOutputStream();
 		poutDecodePPG =  new PipedOutputStream();
@@ -210,7 +184,7 @@ public class IHealthActivity extends  TabActivity {
 		myTabhost.addTab(
 
 				myTabhost.newTabSpec("blt config")
-				.setIndicator("Options")
+				.setIndicator("iHealth 2")
 				.setContent(R.id.linearLayout05)
 				);
 		
@@ -224,17 +198,25 @@ public class IHealthActivity extends  TabActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String text = rec.getText().toString();
-				if(text.equals("Start")){
+				
+				if (text.equals("Start")) {
+					rec.setText("Measure");
+					display.setText("Sit Still For 5 Min Before Measurement");
+					ShowAlertDialogAnd3Button();
+				}
+				else if(text.equals("Measure")){
 					try {
-						filename = getTime("yyyyMMMddHmm");
+						filename = getTime("dd-MM-yyyy--HH-mm");
+						uid = getTime("dd/MM/yyyy  HH:mm");
 						bltservice.saveData.CreatFile(filename);
-						rec.setText("Recording...");
-						display.setText("OKOKOK");
+						display.setText("Initializing");
 						bltservice.Records = true;
 						Thread TCalHRBP = new Thread(CalHRBP); 
 						TCalHRBP.start();
 						Thread Tbltservice = new Thread(bltservice);
 						Tbltservice.start();
+						display.setText("Recording");
+						rec.setText("Stop Recording");
 						Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -242,28 +224,50 @@ public class IHealthActivity extends  TabActivity {
 						e.printStackTrace();
 					}
 				}
-				else if(text.equals("Recording...")){
-					Log.d("MAIN__", "local save done");
-					rec.setText("mSBPV, mDBPV, mHRV = " + mSBPV +", " + mDBPV +", " + mHRV);
-					bltservice.saveData.EndSave();
-					bltservice.Records = false;
-					Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
-					CalHRBP.Continue = false;
-					//TCalHRBP.join();
-					//
-					/* for real bluetooth connection only
+				else if(text.equals("Stop Recording")){
 					try {
-						Tbltservice.Continue = false;
-						Tbltservice.join();
-					} catch (InterruptedException e) {
+						rec.setText("Upload");
+						display.setText("Press The Button To Upload");
+						bltservice.saveData.EndSave();
+						bltservice.Records = false;
+						Log.d("MAIN__", "bltservice.Records ="+bltservice.Records);
+						CalHRBP.Continue = false;
+						//
+						/* for real bluetooth connection only
+						try {
+							Tbltservice.Continue = false;
+							Tbltservice.join();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						*/
+						Log.d("MAIN__", "local save done");
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					*/
-					MySQL.access(filename);
+				}else if(text.equals("Upload")){
+					try {
+						display.setText("Uploading...\n Please wait for a while");
+						rec.setText("Uploading...");
+						//rec.performClick();
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						
+					}
+				} else if (text.equals("Uploading...")) {
+					MySQL.access(filename, uid, bsSBPV, bsDBPV, bsHRV);
 					Log.d("MAIN__", "mysql saved");
-					
-				}	
+					display.setText("SBPV: " + bsSBPV + "\nDBPV: " + bsDBPV +"\n HRV: "+ bsHRV);
+					rec.setText("Done");
+				}else {
+					rec.setText("Start");
+					display.setText("iHealth 2");
+				}
 			}
 		});
 
@@ -277,32 +281,55 @@ public class IHealthActivity extends  TabActivity {
 		String dateNow = formatter.format(currentDate.getTime());
 		return dateNow;
 	}
-	private AlertDialog getAlertDialog(String title,String message){
-		//Builder
-		Builder builder = new AlertDialog.Builder(IHealthActivity.this);
-		//wDialog
-		builder.setTitle(title);
-		//wDialog
-		builder.setMessage(message);
-		//wPositive
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//
-				//				Toast.makeText(IHealthActivity.this, "�z���UOK���s", Toast.LENGTH_SHORT).show();
-			}
-		});
-		//wNegative
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//
-				//				Toast.makeText(IHealthActivity.this, "�z���UCancel���s", Toast.LENGTH_SHORT).show();
-			}
-		});
-		//BuilderAlertDialog
-		builder.show();
-		return builder.create();
+
+
+	
+	private int getRandomInt(int Min, int Max) {
+		return Min + (int)(Math.random() * ((Max - Min) + 1));
+	}
+	
+	//三個按鈕的對話方塊展示
+	private void ShowAlertDialogAnd3Button()
+	{
+		 Builder MyAlertDialog = new AlertDialog.Builder(this);
+		 MyAlertDialog.setTitle("Bluetooth Simulator");
+		 MyAlertDialog.setMessage("Choose Simulation Mode");
+		 //建立按下按鈕
+		 DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener()
+	 {
+	public void onClick(DialogInterface dialog, int which) {
+	 //如果不做任何事情 就會直接關閉 對話方塊
+		Log.d("MAIN__", "Ans: "+ which);
+		switch(which) {
+			case -2:
+				Log.d("MAIN__", "Ans: Hypertension");
+				bsSBPV = getRandomInt(141, 159);
+				bsDBPV = getRandomInt(91, 99);
+				break;
+			case -3:
+				Log.d("MAIN__", "Ans: Normal");
+				bsSBPV = getRandomInt(91, 119);
+				bsDBPV = getRandomInt(61, 79);
+				break;
+			case -1:
+				Log.d("MAIN__", "Ans: Hypotension");
+				bsSBPV = getRandomInt(71, 89);
+				bsDBPV = getRandomInt(41, 59);
+				break;
+			default:
+				Log.d("MAIN__", "Ans: default");
+				bsSBPV = getRandomInt(91, 119);
+				bsDBPV = getRandomInt(61, 79);
+				break;
+		}
+		
+		bsHRV = getRandomInt(65, 95);
+	}
+	 };
+	 MyAlertDialog.setPositiveButton("Hypertension",OkClick );
+	 MyAlertDialog.setNeutralButton("Normal",OkClick );
+	 MyAlertDialog.setNegativeButton("Hypotension",OkClick );
+	 MyAlertDialog.show();
 	}
 
 
@@ -386,7 +413,6 @@ public class IHealthActivity extends  TabActivity {
 
 	}
 	int ecg , ppg;
-	//int count=0;
 	short checksum;
 	public void decode()
 	{
@@ -428,7 +454,7 @@ public class IHealthActivity extends  TabActivity {
 					if(results[2]!=-1 && results[2]!=0 && results[2]>=70 && results[3]!=-1 && results[3]!=0 && results[3]>=50) {
 						SBPV[iSBPV++] = results[2];
 						DBPV[iDBPV++] = results[3];
-						Log.e("MAIN__", "SBPV, DBPV =" + results[2] +", " + results[3]);
+						Log.d("MAIN__", "SBPV, DBPV =" + results[2] +", " + results[3]);
 					} else {
 						Log.e("MAIN__", "SBPV = ERROR && DBPV = ERROR");
 					}

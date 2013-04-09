@@ -15,7 +15,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
 public class MySQL {
-	public static void access(String filename) {
+	public static void access(String filename, String uid, int sbpv, int dbpv, int hrv) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = null;
@@ -42,7 +42,7 @@ public class MySQL {
 				// do something with "line"
 
 				RowData = line.split(",");
-				ps.setString(1, filename);
+				ps.setString(1, uid);
 				ps.setInt(2, i++);
 				ps.setInt(3, Integer.parseInt(RowData[0]));
 				ps.setInt(4, Integer.parseInt(RowData[1]));
@@ -51,22 +51,20 @@ public class MySQL {
 				if (((i % 1000) == 0)) {
 					ps.executeBatch();
 					ps.clearBatch();
-			
+					Log.d("MySQL", "Added Batch " + i);
 				}
-				else 
-					Log.d("MySQL", "Adding Batch " + i);
+				
+				
 			}
 			reader.close();
 			ps.executeBatch();
 
 			((PreparedStatement) connection
 					.prepareStatement("insert into results (uid, sbpv, dbpv, hrv) values ('"
-							+ filename
+							+ uid
 							+ "',"
-							+ (int) (Math.random() * 100)
-							+ "," + 110 + "," + 91 + ");")).execute();
-			
-		
+							+ sbpv
+							+ "," + dbpv + "," + hrv + ");")).execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

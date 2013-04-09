@@ -21,7 +21,7 @@
             android:longClickable="false"
             android:scrollHorizontally="false"
             android:selectAllOnFocus="false"
-            android:text="Large Text"
+            android:text="iHealth 2"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25sp" />
 
