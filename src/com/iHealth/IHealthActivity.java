@@ -303,23 +303,23 @@ public class IHealthActivity extends  TabActivity {
 		switch(which) {
 			case -2:
 				Log.d("MAIN__", "Ans: Hypertension");
-				bsSBPV = getRandomInt(141, 159);
-				bsDBPV = getRandomInt(91, 99);
+				bsSBPV = getRandomInt(141, 158);
+				bsDBPV = getRandomInt(91, 98);
 				break;
 			case -3:
 				Log.d("MAIN__", "Ans: Normal");
-				bsSBPV = getRandomInt(91, 119);
-				bsDBPV = getRandomInt(61, 79);
+				bsSBPV = getRandomInt(91, 118);
+				bsDBPV = getRandomInt(61, 78);
 				break;
 			case -1:
 				Log.d("MAIN__", "Ans: Hypotension");
-				bsSBPV = getRandomInt(71, 89);
-				bsDBPV = getRandomInt(41, 59);
+				bsSBPV = getRandomInt(71, 88);
+				bsDBPV = getRandomInt(41, 58);
 				break;
 			default:
 				Log.d("MAIN__", "Ans: default");
-				bsSBPV = getRandomInt(91, 119);
-				bsDBPV = getRandomInt(61, 79);
+				bsSBPV = getRandomInt(91, 118);
+				bsDBPV = getRandomInt(61, 78);
 				break;
 		}
 		
