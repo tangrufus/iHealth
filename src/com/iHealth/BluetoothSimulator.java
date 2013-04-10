@@ -49,7 +49,7 @@ public class BluetoothSimulator implements Runnable{
 		try{
 			  // Open the file that is the first 
 			  // command line parameter
-			  InputStream fstream = mcontext.getAssets().open("ecg_ppg_signal.csv");
+			  InputStream fstream = mcontext.getAssets().open("ecg_ppg_present.csv");
 			  // Get the object of DataInputStream
 			  DataInputStream in = new DataInputStream(fstream);
 			  BufferedReader br = new BufferedReader(new InputStreamReader(in));
