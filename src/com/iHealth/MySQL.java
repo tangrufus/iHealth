@@ -33,7 +33,7 @@ public class MySQL {
 
 			String line = reader.readLine();
 			int i = 0;
-			String sql = "insert into raws (uid, sequence, ecg, ppg) values (?,?,?,?); ";
+			String sql = "insert delayed into raws (uid, sequence, ecg, ppg) values (?,?,?,?); ";
 			String[] RowData = new String[2];
 			PreparedStatement ps = (PreparedStatement) connection
 					.prepareStatement(sql);
@@ -69,4 +69,33 @@ public class MySQL {
 			e.printStackTrace();
 		}
 	}
+	//====================
+	public static void access(String filename, String uid, int s, int sbpv, int dbpv, int hrv, int simMode) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connection = null;
+			connection = (Connection) DriverManager.getConnection(
+					"jdbc:mysql://172.16.0.102:3306/iHealth", "root", "root");
+		
+			((PreparedStatement) connection
+					.prepareStatement("insert into results (uid, calc, time, sbpv, dbpv, hrv, mode) values ('"
+							+ uid
+							+ "',"
+							+ 0
+							+ "," 
+							+ s 
+							+ "," 
+							+ sbpv
+							+ "," 
+							+ dbpv 
+							+ "," 
+							+ hrv 
+							+ "," 
+							+ simMode
+							+ ");")).execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
